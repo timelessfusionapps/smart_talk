@@ -17,8 +17,8 @@ Widget buildLoading(Widget child) {
 }
 
 Widget chatImage({required String imageSrc, required Function onTap}) {
-  return GestureDetector(
-    onTap: onTap(),
+  return OutlinedButton(
+    onPressed: onTap(),
     child: Image.network(
       imageSrc,
       width: Sizes.dimen_200,

@@ -306,8 +306,8 @@ class _ChatPageState extends State<ChatPage> {
                       )
                     : chatMessages.type == MessageType.image
                         ? Container(
-                            margin:
-                                const EdgeInsets.only(right: Sizes.dimen_10),
+                            margin: const EdgeInsets.only(
+                                right: Sizes.dimen_10, top: Sizes.dimen_10),
                             child: chatImage(
                                 imageSrc: chatMessages.content, onTap: () {}),
                           )
@@ -430,7 +430,8 @@ class _ChatPageState extends State<ChatPage> {
                       )
                     : chatMessages.type == MessageType.image
                         ? Container(
-                            margin: const EdgeInsets.only(left: Sizes.dimen_10),
+                            margin: const EdgeInsets.only(
+                                left: Sizes.dimen_10, top: Sizes.dimen_10),
                             child: chatImage(
                                 imageSrc: chatMessages.content, onTap: () {}),
                           )
