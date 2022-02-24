@@ -34,26 +34,26 @@ class _ProfilePageState extends State<ProfilePage> {
 
   bool isLoading = false;
   File? avatarImageFile;
-  late ProfileProvider settingsProvider;
+  late ProfileProvider profileProvider;
 
   final FocusNode focusNodeNickname = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    settingsProvider = context.read<ProfileProvider>();
+    profileProvider = context.read<ProfileProvider>();
     readLocal();
   }
 
   void readLocal() {
     setState(() {
-      id = settingsProvider.getPrefs(FirestoreConstants.id) ?? "";
-      displayName = settingsProvider.getPrefs(FirestoreConstants.displayName) ?? "";
+      id = profileProvider.getPrefs(FirestoreConstants.id) ?? "";
+      displayName = profileProvider.getPrefs(FirestoreConstants.displayName) ?? "";
 
-      photoUrl = settingsProvider.getPrefs(FirestoreConstants.photoUrl) ?? "";
+      photoUrl = profileProvider.getPrefs(FirestoreConstants.photoUrl) ?? "";
       phoneNumber =
-          settingsProvider.getPrefs(FirestoreConstants.phoneNumber) ?? "";
-      aboutMe = settingsProvider.getPrefs(FirestoreConstants.aboutMe) ?? "";
+          profileProvider.getPrefs(FirestoreConstants.phoneNumber) ?? "";
+      aboutMe = profileProvider.getPrefs(FirestoreConstants.aboutMe) ?? "";
     });
     displayNameController = TextEditingController(text: displayName);
     aboutMeController = TextEditingController(text: aboutMe);
@@ -61,6 +61,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future getImage() async {
     ImagePicker imagePicker = ImagePicker();
+    // PickedFile is not supported
+    // Now use XFile?
     XFile? pickedFile = await imagePicker
         .pickImage(source: ImageSource.gallery)
         .catchError((onError) {
@@ -81,7 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future uploadFile() async {
     String fileName = id;
-    UploadTask uploadTask = settingsProvider.uploadFile(
+    UploadTask uploadTask = profileProvider.uploadImageFile(
         avatarImageFile!, fileName);
     try {
       TaskSnapshot snapshot = await uploadTask;
@@ -91,10 +93,10 @@ class _ProfilePageState extends State<ProfilePage> {
           displayName: displayName,
           phoneNumber: phoneNumber,
           aboutMe: aboutMe);
-      settingsProvider.updateFirestoreData(
+      profileProvider.updateFirestoreData(
           FirestoreConstants.pathUserCollection, id, updateInfo.toJson())
           .then((value) async {
-        await settingsProvider.setPrefs(FirestoreConstants.photoUrl, photoUrl);
+        await profileProvider.setPrefs(FirestoreConstants.photoUrl, photoUrl);
         setState(() {
           isLoading = false;
         });
@@ -107,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  void handleUpdateData() {
+  void updateFirestoreData() {
     focusNodeNickname.unfocus();
     setState(() {
       isLoading = true;
@@ -120,16 +122,16 @@ class _ProfilePageState extends State<ProfilePage> {
         displayName: displayName,
         phoneNumber: phoneNumber,
         aboutMe: aboutMe);
-    settingsProvider.updateFirestoreData(
+    profileProvider.updateFirestoreData(
         FirestoreConstants.pathUserCollection, id, updateInfo.toJson())
         .then((value) async {
-      await settingsProvider.setPrefs(
+      await profileProvider.setPrefs(
           FirestoreConstants.displayName, displayName);
-      await settingsProvider.setPrefs(
+      await profileProvider.setPrefs(
           FirestoreConstants.phoneNumber, phoneNumber);
-      await settingsProvider.setPrefs(
+      await profileProvider.setPrefs(
         FirestoreConstants.photoUrl, photoUrl,);
-      await settingsProvider.setPrefs(
+      await profileProvider.setPrefs(
           FirestoreConstants.aboutMe,aboutMe );
 
       setState(() {
@@ -277,7 +279,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-                  ElevatedButton(onPressed: handleUpdateData, child:const Padding(
+                  ElevatedButton(onPressed: updateFirestoreData, child:const Padding(
                     padding:  EdgeInsets.all(8.0),
                     child:  Text('Update Info'),
                   )),

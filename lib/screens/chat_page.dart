@@ -102,16 +102,14 @@ class _ChatPageState extends State<ChatPage> {
   Future getImage() async {
     ImagePicker imagePicker = ImagePicker();
     XFile? pickedFile;
-
     pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
-
     if (pickedFile != null) {
       imageFile = File(pickedFile.path);
       if (imageFile != null) {
         setState(() {
           isLoading = true;
         });
-        uploadFile();
+        uploadImageFile();
       }
     }
   }
@@ -144,9 +142,9 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void uploadFile() async {
+  void uploadImageFile() async {
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    UploadTask uploadTask = chatProvider.uploadFile(imageFile!, fileName);
+    UploadTask uploadTask = chatProvider.uploadImageFile(imageFile!, fileName);
     try {
       TaskSnapshot snapshot = await uploadTask;
       imageUrl = await snapshot.ref.getDownloadURL();
@@ -175,7 +173,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  // checking if receiver message
+  // checking if received message
   bool isMessageReceived(int index) {
     if ((index > 0 &&
             listMessages[index - 1].get(FirestoreConstants.idFrom) ==
@@ -187,7 +185,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  // checking if sender message
+  // checking if sent message
   bool isMessageSent(int index) {
     if ((index > 0 &&
             listMessages[index - 1].get(FirestoreConstants.idFrom) !=
@@ -262,7 +260,7 @@ class _ChatPageState extends State<ChatPage> {
             textCapitalization: TextCapitalization.sentences,
             controller: textEditingController,
             decoration:
-                kTextInputDecoration.copyWith(hintText: 'type your message...'),
+                kTextInputDecoration.copyWith(hintText: 'write here...'),
             onSubmitted: (value) {
               onSendMessage(textEditingController.text, MessageType.text);
             },
