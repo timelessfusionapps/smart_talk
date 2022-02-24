@@ -14,9 +14,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -50,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 vertical50,
                 const Text(
-                  'Welcome to Smart Chat',
+                  'Welcome to Smart Talk',
                   style: TextStyle(
                     fontSize: Sizes.dimen_26,
                     fontWeight: FontWeight.bold,

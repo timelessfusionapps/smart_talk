@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class Utilities {
+class KeyboardUtils {
   static bool isKeyboardShowing() {
     if (WidgetsBinding.instance != null) {
       return WidgetsBinding.instance!.window.viewInsets.bottom > 0;

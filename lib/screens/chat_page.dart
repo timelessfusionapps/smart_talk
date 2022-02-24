@@ -11,7 +11,7 @@ import 'package:smart_talk/allWidgets/common_widgets.dart';
 import 'package:smart_talk/models/chat_messages.dart';
 import 'package:smart_talk/providers/auth_provider.dart';
 import 'package:smart_talk/providers/chat_provider.dart';
-import 'package:smart_talk/providers/settings_provider.dart';
+import 'package:smart_talk/providers/profile_provider.dart';
 import 'package:smart_talk/screens/login_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -175,8 +175,8 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  // checking sender message
-  bool isLastMessageLeft(int index) {
+  // checking if receiver message
+  bool isMessageReceived(int index) {
     if ((index > 0 &&
             listMessages[index - 1].get(FirestoreConstants.idFrom) ==
                 currentUserId) ||
@@ -187,8 +187,8 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  // checking receiver message
-  bool isLastMessageRight(int index) {
+  // checking if sender message
+  bool isMessageSent(int index) {
     if ((index > 0 &&
             listMessages[index - 1].get(FirestoreConstants.idFrom) !=
                 currentUserId) ||
@@ -208,10 +208,10 @@ class _ChatPageState extends State<ChatPage> {
         actions: [
           IconButton(
             onPressed: () {
-              SettingsProvider settingProvider;
-              settingProvider = context.read<SettingsProvider>();
+              ProfileProvider profileProvider;
+              profileProvider = context.read<ProfileProvider>();
               String callPhoneNumber =
-                  settingProvider.getPrefs(FirestoreConstants.phoneNumber) ??
+                  profileProvider.getPrefs(FirestoreConstants.phoneNumber) ??
                       "";
               _callPhoneNumber(callPhoneNumber);
             },
@@ -312,7 +312,7 @@ class _ChatPageState extends State<ChatPage> {
                                 imageSrc: chatMessages.content, onTap: () {}),
                           )
                         : const SizedBox.shrink(),
-                isLastMessageRight(index)
+                isMessageSent(index)
                     ? Container(
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
@@ -353,7 +353,7 @@ class _ChatPageState extends State<ChatPage> {
                       ),
               ],
             ),
-            isLastMessageRight(index)
+            isMessageSent(index)
                 ? Container(
                     margin: const EdgeInsets.only(
                         right: Sizes.dimen_50,
@@ -381,7 +381,7 @@ class _ChatPageState extends State<ChatPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                isLastMessageLeft(index)
+                isMessageReceived(index)
                     // left side (received message)
                     ? Container(
                         clipBehavior: Clip.hardEdge,
@@ -438,7 +438,7 @@ class _ChatPageState extends State<ChatPage> {
                         : const SizedBox.shrink(),
               ],
             ),
-            isLastMessageLeft(index)
+            isMessageReceived(index)
                 ? Container(
                     margin: const EdgeInsets.only(
                         left: Sizes.dimen_50,
@@ -469,7 +469,7 @@ class _ChatPageState extends State<ChatPage> {
     return Flexible(
       child: groupChatId.isNotEmpty
           ? StreamBuilder<QuerySnapshot>(
-              stream: chatProvider.getChatStream(groupChatId, _limit),
+              stream: chatProvider.getChatMessage(groupChatId, _limit),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData) {

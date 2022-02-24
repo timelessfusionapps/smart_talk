@@ -30,7 +30,7 @@ class ChatProvider {
         .update(dataUpdate);
   }
 
-  Stream<QuerySnapshot> getChatStream(String groupChatId, int limit) {
+  Stream<QuerySnapshot> getChatMessage(String groupChatId, int limit) {
     return firebaseFirestore
         .collection(FirestoreConstants.pathMessageCollection)
         .doc(groupChatId)

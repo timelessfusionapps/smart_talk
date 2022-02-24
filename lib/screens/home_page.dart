@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,14 +7,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_talk/allConstants/all_constants.dart';
 import 'package:smart_talk/allWidgets/loading_view.dart';
-import 'package:smart_talk/models/user_chat.dart';
+import 'package:smart_talk/models/chat_user.dart';
 import 'package:smart_talk/providers/auth_provider.dart';
 import 'package:smart_talk/providers/home_provider.dart';
 import 'package:smart_talk/screens/chat_page.dart';
 import 'package:smart_talk/screens/login_page.dart';
-import 'package:smart_talk/screens/setting_page.dart';
+import 'package:smart_talk/screens/profile_page.dart';
 import 'package:smart_talk/utilities/debouncer.dart';
-import 'package:smart_talk/utilities/utilities.dart';
+import 'package:smart_talk/utilities/keyboard_utils.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -170,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const SettingsPage()));
+                            builder: (context) => const ProfilePage()));
                   },
                   icon: const Icon(Icons.person)),
             ]),
@@ -183,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                   buildSearchBar(),
                   Expanded(
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: homeProvider.getFirestoreStream(
+                      stream: homeProvider.getFirestoreData(
                           FirestoreConstants.pathUserCollection,
                           _limit,
                           _textSearch),
@@ -298,14 +297,14 @@ class _HomePageState extends State<HomePage> {
   Widget buildItem(BuildContext context, DocumentSnapshot? documentSnapshot) {
     final firebaseAuth = FirebaseAuth.instance;
     if (documentSnapshot != null) {
-      UserChat userChat = UserChat.fromDocument(documentSnapshot);
+      ChatUser userChat = ChatUser.fromDocument(documentSnapshot);
       if (userChat.id == currentUserId) {
         return const SizedBox.shrink();
       } else {
         return TextButton(
           onPressed: () {
-            if (Utilities.isKeyboardShowing()) {
-              Utilities.closeKeyboard(context);
+            if (KeyboardUtils.isKeyboardShowing()) {
+              KeyboardUtils.closeKeyboard(context);
             }
             Navigator.push(
                 context,

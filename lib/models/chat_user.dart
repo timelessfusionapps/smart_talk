@@ -3,28 +3,28 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smart_talk/allConstants/all_constants.dart';
 
-class UserChat extends Equatable {
+class ChatUser extends Equatable {
   final String id;
   final String photoUrl;
   final String displayName;
   final String phoneNumber;
   final String aboutMe;
 
-  const UserChat(
+  const ChatUser(
       {required this.id,
       required this.photoUrl,
       required this.displayName,
       required this.phoneNumber,
       required this.aboutMe});
 
-  UserChat copyWith({
+  ChatUser copyWith({
     String? id,
     String? photoUrl,
     String? nickname,
     String? phoneNumber,
     String? email,
   }) =>
-      UserChat(
+      ChatUser(
           id: id ?? this.id,
           photoUrl: photoUrl ?? this.photoUrl,
           displayName: nickname ?? displayName,
@@ -37,7 +37,7 @@ class UserChat extends Equatable {
         FirestoreConstants.phoneNumber: phoneNumber,
         FirestoreConstants.aboutMe: aboutMe,
       };
-  factory UserChat.fromDocument(DocumentSnapshot snapshot) {
+  factory ChatUser.fromDocument(DocumentSnapshot snapshot) {
     String photoUrl = "";
     String nickname = "";
     String phoneNumber = "";
@@ -53,7 +53,7 @@ class UserChat extends Equatable {
         print(e);
       }
     }
-    return UserChat(
+    return ChatUser(
         id: snapshot.id,
         photoUrl: photoUrl,
         displayName: nickname,

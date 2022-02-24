@@ -8,18 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:smart_talk/allConstants/all_constants.dart';
 import 'package:smart_talk/allConstants/app_constants.dart';
 import 'package:smart_talk/allWidgets/common_widgets.dart';
-import 'package:smart_talk/models/user_chat.dart';
-import 'package:smart_talk/providers/settings_provider.dart';
+import 'package:smart_talk/models/chat_user.dart';
+import 'package:smart_talk/providers/profile_provider.dart';
 
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _ProfilePageState extends State<ProfilePage> {
   TextEditingController? displayNameController;
   TextEditingController? aboutMeController;
   final TextEditingController _phoneController = TextEditingController();
@@ -34,14 +34,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
   bool isLoading = false;
   File? avatarImageFile;
-  late SettingsProvider settingsProvider;
+  late ProfileProvider settingsProvider;
 
   final FocusNode focusNodeNickname = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    settingsProvider = context.read<SettingsProvider>();
+    settingsProvider = context.read<ProfileProvider>();
     readLocal();
   }
 
@@ -86,7 +86,7 @@ class _SettingsPageState extends State<SettingsPage> {
     try {
       TaskSnapshot snapshot = await uploadTask;
       photoUrl = await snapshot.ref.getDownloadURL();
-      UserChat updateInfo = UserChat(id: id,
+      ChatUser updateInfo = ChatUser(id: id,
           photoUrl: photoUrl,
           displayName: displayName,
           phoneNumber: phoneNumber,
@@ -115,7 +115,7 @@ class _SettingsPageState extends State<SettingsPage> {
         phoneNumber = dialCodeDigits + _phoneController.text.toString();
       }
     });
-    UserChat updateInfo = UserChat(id: id,
+    ChatUser updateInfo = ChatUser(id: id,
         photoUrl: photoUrl,
         displayName: displayName,
         phoneNumber: phoneNumber,
@@ -148,7 +148,7 @@ class _SettingsPageState extends State<SettingsPage> {
         Scaffold(
           appBar: AppBar(
             title: const Text(
-              AppConstants.settingsTitle,
+              AppConstants.profileTitle,
             ),
           ),
           body: SingleChildScrollView(

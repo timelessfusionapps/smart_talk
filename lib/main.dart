@@ -10,7 +10,7 @@ import 'package:smart_talk/firebase_options.dart';
 import 'package:smart_talk/providers/auth_provider.dart';
 import 'package:smart_talk/providers/chat_provider.dart';
 import 'package:smart_talk/providers/home_provider.dart';
-import 'package:smart_talk/providers/settings_provider.dart';
+import 'package:smart_talk/providers/profile_provider.dart';
 import 'package:smart_talk/screens/splash_page.dart';
 import 'package:smart_talk/utilities/theme.dart';
 
@@ -41,8 +41,8 @@ class MyApp extends StatelessWidget {
                 prefs: prefs,
                 googleSignIn: GoogleSignIn(),
                 firebaseAuth: FirebaseAuth.instance)),
-        Provider<SettingsProvider>(
-            create: (_) => SettingsProvider(
+        Provider<ProfileProvider>(
+            create: (_) => ProfileProvider(
                 prefs: prefs,
                 firebaseFirestore: firebaseFirestore,
                 firebaseStorage: firebaseStorage)),
@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Smart App',
+        title: 'Smart Talk',
         theme: appTheme,
         home: const SplashPage(),
       ),

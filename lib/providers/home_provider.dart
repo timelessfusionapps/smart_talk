@@ -14,7 +14,7 @@ class HomeProvider {
         .update(updateData);
   }
 
-  Stream<QuerySnapshot> getFirestoreStream(
+  Stream<QuerySnapshot> getFirestoreData(
       String collectionPath, int limit, String? textSearch) {
     if (textSearch?.isNotEmpty == true) {
       return firebaseFirestore

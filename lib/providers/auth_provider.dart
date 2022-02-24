@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_talk/allConstants/all_constants.dart';
-import 'package:smart_talk/models/user_chat.dart';
+import 'package:smart_talk/models/chat_user.dart';
 
 enum Status {
   uninitialized,
@@ -87,7 +87,7 @@ class AuthProvider extends ChangeNotifier {
               FirestoreConstants.phoneNumber, currentUser.phoneNumber ?? "");
         } else {
           DocumentSnapshot documentSnapshot = document[0];
-          UserChat userChat = UserChat.fromDocument(documentSnapshot);
+          ChatUser userChat = ChatUser.fromDocument(documentSnapshot);
           await prefs.setString(FirestoreConstants.id, userChat.id);
           await prefs.setString(
               FirestoreConstants.displayName, userChat.displayName);
