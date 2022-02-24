@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_talk/allConstants/all_constants.dart';
 import 'package:smart_talk/allConstants/app_constants.dart';
-import 'package:smart_talk/allWidgets/common_widgets.dart';
+import 'package:smart_talk/allWidgets/loading_view.dart';
 import 'package:smart_talk/models/chat_user.dart';
 import 'package:smart_talk/providers/profile_provider.dart';
 
@@ -145,152 +145,154 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
+    return
         Scaffold(
           appBar: AppBar(
             title: const Text(
               AppConstants.profileTitle,
             ),
           ),
-          body: SingleChildScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  GestureDetector(
-                    onTap: getImage,
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: avatarImageFile == null ? photoUrl.isNotEmpty ?
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(60),
-                        child: Image.network(photoUrl,
-                          fit: BoxFit.cover,
-                          width: 120,
-                          height: 120,
-                          errorBuilder: (context, object, stackTrace) {
-                            return const Icon(Icons.account_circle, size: 90,
-                              color: AppColors.greyColor,);
-                          },
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            return SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.grey,
-                                  value: loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes! : null,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ) : const Icon(Icons.account_circle,
-                        size: 90,
-                        color: AppColors.greyColor,)
-                          : ClipRRect(
-                        borderRadius: BorderRadius.circular(60),
-                        child: Image.file(avatarImageFile!, width: 120,
-                          height: 120,
-                          fit: BoxFit.cover,),),
-                      margin: const EdgeInsets.all(20),
-                    ),),
-                  Column(
+          body: Stack(
+            children: [
+              SingleChildScrollView(
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Text('Name', style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.spaceCadet,
-                      ),),
-                      TextField(
-                        decoration: kTextInputDecoration.copyWith(
-                            hintText: 'Write your Name'),
-                        controller: displayNameController,
-                        onChanged: (value) {
-                          displayName = value;
-                        },
-                        focusNode: focusNodeNickname,
-                      ),
-                      vertical15,
-                      const Text('About Me...', style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.spaceCadet
-                      ),),
-                      TextField(
-                        decoration: kTextInputDecoration.copyWith(
-                            hintText: 'Write about yourself...'),
-                        onChanged: (value) {
-                          aboutMe = value;
-                        },
-                      ),
-                      vertical15,
-                      const Text('Select Country Code', style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.spaceCadet,
-                      ),),
-                      Container(
-                        width: double.infinity,
-                        alignment: Alignment.centerLeft,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 1.5),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: CountryCodePicker(
-                          onChanged: (country) {
-                            setState(() {
-                              dialCodeDigits = country.dialCode!;
-                            });
-                          },
-                          initialSelection: 'IN',
-                          showCountryOnly: false,
-                          showOnlyCountryWhenClosed: false,
-                          favorite: const ["+1", "US", "+91", "IN"],
-                        ),
-                      ),
-                      vertical15,
-                      const Text('Phone Number', style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.spaceCadet,
-                      ),),
-                      TextField(
-                        decoration: kTextInputDecoration.copyWith(
-                          hintText: 'Phone Number',
-                          prefix: Padding(
-                            padding: const EdgeInsets.all(4),
-                            child: Text(dialCodeDigits,
-                              style: const TextStyle(color: Colors.grey),),
+                      GestureDetector(
+                        onTap: getImage,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: avatarImageFile == null ? photoUrl.isNotEmpty ?
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(60),
+                            child: Image.network(photoUrl,
+                              fit: BoxFit.cover,
+                              width: 120,
+                              height: 120,
+                              errorBuilder: (context, object, stackTrace) {
+                                return const Icon(Icons.account_circle, size: 90,
+                                  color: AppColors.greyColor,);
+                              },
+                              loadingBuilder: (BuildContext context, Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                }
+                                return SizedBox(
+                                  width: 90,
+                                  height: 90,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.grey,
+                                      value: loadingProgress.expectedTotalBytes != null
+                                          ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes! : null,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ) : const Icon(Icons.account_circle,
+                            size: 90,
+                            color: AppColors.greyColor,)
+                              : ClipRRect(
+                            borderRadius: BorderRadius.circular(60),
+                            child: Image.file(avatarImageFile!, width: 120,
+                              height: 120,
+                              fit: BoxFit.cover,),),
+                          margin: const EdgeInsets.all(20),
+                        ),),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Text('Name', style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.spaceCadet,
+                          ),),
+                          TextField(
+                            decoration: kTextInputDecoration.copyWith(
+                                hintText: 'Write your Name'),
+                            controller: displayNameController,
+                            onChanged: (value) {
+                              displayName = value;
+                            },
+                            focusNode: focusNodeNickname,
                           ),
-                        ),
-                        controller: _phoneController,
-                        maxLength: 12,
-                        keyboardType: TextInputType.number,
+                          vertical15,
+                          const Text('About Me...', style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.spaceCadet
+                          ),),
+                          TextField(
+                            decoration: kTextInputDecoration.copyWith(
+                                hintText: 'Write about yourself...'),
+                            onChanged: (value) {
+                              aboutMe = value;
+                            },
+                          ),
+                          vertical15,
+                          const Text('Select Country Code', style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.spaceCadet,
+                          ),),
+                          Container(
+                            width: double.infinity,
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black, width: 1.5),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: CountryCodePicker(
+                              onChanged: (country) {
+                                setState(() {
+                                  dialCodeDigits = country.dialCode!;
+                                });
+                              },
+                              initialSelection: 'IN',
+                              showCountryOnly: false,
+                              showOnlyCountryWhenClosed: false,
+                              favorite: const ["+1", "US", "+91", "IN"],
+                            ),
+                          ),
+                          vertical15,
+                          const Text('Phone Number', style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.spaceCadet,
+                          ),),
+                          TextField(
+                            decoration: kTextInputDecoration.copyWith(
+                              hintText: 'Phone Number',
+                              prefix: Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: Text(dialCodeDigits,
+                                  style: const TextStyle(color: Colors.grey),),
+                              ),
+                            ),
+                            controller: _phoneController,
+                            maxLength: 12,
+                            keyboardType: TextInputType.number,
+                          ),
+                        ],
                       ),
+                      ElevatedButton(onPressed: updateFirestoreData, child:const Padding(
+                        padding:  EdgeInsets.all(8.0),
+                        child:  Text('Update Info'),
+                      )),
+
                     ],
                   ),
-                  ElevatedButton(onPressed: updateFirestoreData, child:const Padding(
-                    padding:  EdgeInsets.all(8.0),
-                    child:  Text('Update Info'),
-                  )),
+                ),
+              Positioned(child: isLoading ? const LoadingView() : const SizedBox.shrink()),
+            ],
+          ),
 
-                ],
-              ),
-            ),
+        );
 
-        ),
-        Center(child: buildLoading(isLoading? const CircularProgressIndicator() : const SizedBox.shrink())),
-      ],
-    );
   }
 }

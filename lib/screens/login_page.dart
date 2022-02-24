@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_talk/allConstants/all_constants.dart';
-import 'package:smart_talk/allWidgets/common_widgets.dart';
 import 'package:smart_talk/providers/auth_provider.dart';
 import 'package:smart_talk/screens/home_page.dart';
 
@@ -32,62 +31,60 @@ class _LoginPageState extends State<LoginPage> {
         break;
     }
 
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Scaffold(
-          body: Padding(
+    return Scaffold(
+      body: Stack(
+        children: [
+          ListView(
+            shrinkWrap: true,
             padding: const EdgeInsets.symmetric(
               vertical: Sizes.dimen_30,
               horizontal: Sizes.dimen_20,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                vertical50,
-                const Text(
-                  'Welcome to Smart Talk',
-                  style: TextStyle(
-                    fontSize: Sizes.dimen_26,
-                    fontWeight: FontWeight.bold,
-                  ),
+            children: [
+              vertical50,
+              const Text(
+                'Welcome to Smart Talk',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: Sizes.dimen_26,
+                  fontWeight: FontWeight.bold,
                 ),
-                vertical30,
-                const Text(
-                  'Login to continue',
-                  style: TextStyle(
-                    fontSize: Sizes.dimen_22,
-                    fontWeight: FontWeight.w500,
-                  ),
+              ),
+              vertical30,
+              const Text(
+                'Login to continue',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: Sizes.dimen_22,
+                  fontWeight: FontWeight.w500,
                 ),
-                vertical50,
-                Center(child: Image.asset('assets/images/back.png')),
-                vertical50,
-                GestureDetector(
-                  onTap: () async {
-                    bool isSuccess = await authProvider.handleGoogleSignIn();
-                    if (isSuccess) {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()));
-                    }
-                  },
-                  child: Image.asset('assets/images/google_login.jpg'),
-                ),
-              ],
-            ),
+              ),
+              vertical50,
+              Center(child: Image.asset('assets/images/back.png')),
+              vertical50,
+              GestureDetector(
+                onTap: () async {
+                  bool isSuccess = await authProvider.handleGoogleSignIn();
+                  if (isSuccess) {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
+                  }
+                },
+                child: Image.asset('assets/images/google_login.jpg'),
+              ),
+            ],
           ),
-        ),
-        Center(
-          child: buildLoading(authProvider.status == Status.authenticating
-              ? const CircularProgressIndicator(
-                  color: AppColors.lightGrey,
-                )
-              : const SizedBox.shrink()),
-        ),
-      ],
+          Center(
+            child: authProvider.status == Status.authenticating
+                ? const CircularProgressIndicator(
+                    color: AppColors.lightGrey,
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ],
+      ),
     );
   }
 }

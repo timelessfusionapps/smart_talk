@@ -12,10 +12,6 @@ Widget errorContainer() {
   );
 }
 
-Widget buildLoading(Widget child) {
-  return Positioned(child: child);
-}
-
 Widget chatImage({required String imageSrc, required Function onTap}) {
   return OutlinedButton(
     onPressed: onTap(),
